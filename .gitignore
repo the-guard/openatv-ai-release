@@ -42,3 +42,6 @@ mipsel-oe-linux-libtool
 doxy/
 *.ipch
 *.vsidx
+*.bin
+*.opendb
+*.db-wal
