@@ -1,4 +1,4 @@
-#include "lib/components/STBZone::GetInstance().h"
+#include "lib/components/stbzone.h"
 #include "lib/components/socket_client.h"
 
 #include <curl/curl.h>

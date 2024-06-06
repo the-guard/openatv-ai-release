@@ -4,6 +4,7 @@
 #include <lib/base/estring.h>
 #include <lib/base/nconfig.h>
 #include <lib/gui/ewidgetdesktop.h>
+#include "lib/components/stbzone.h"
 
 std::map<eSubtitleWidget::subfont_t, eSubtitleWidget::eSubtitleStyle> eSubtitleWidget::subtitleStyles;
 
@@ -27,7 +28,7 @@ void eSubtitleWidget::checkTranslation() {
 	m_translation_timer->stop();
 	std::string translation = STBZone::GetInstance().getFirstLine(STBZone::GetInstance().translation_result);
 	if (STBZone::GetInstance().translation_received
-		&& translation != STBzone::GetInstance().latest_visible_translation
+		&& translation != STBZone::GetInstance().latest_visible_translation
 		&& STBZone::GetInstance().subtitle_type == "1"
 		)
 	{

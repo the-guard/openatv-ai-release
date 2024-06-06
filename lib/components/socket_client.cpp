@@ -6,7 +6,7 @@
 #include <fcntl.h>      // Include fcntl.h for fcntl() and related constants
 #include <iostream>
 #include <cstring>
-#include "lib/components/STBZone::GetInstance().h"
+#include "lib/components/stbzone.h"
 
 
 // Static method to get the singleton instance
