@@ -35,7 +35,7 @@ STBZone::STBZone()
 	page("0"),
 	magazine("0"),
 	service_id(""),
-	ai_socket_available(false),
+	ai_socket_available(true),
 	initialized(false),
 	valid_subscription(false),
 	translation_received(false),
@@ -240,13 +240,7 @@ std::vector<std::string> STBZone::parseJsonArray(const std::string& json) {
 //Initialize the 
 int STBZone::initiate()
 {
-	//Check first if socket is available
-	std::ifstream aiSocket("/etc/init.d/aisocket");
-	ai_socket_available =  aiSocket.is_open();
-	if (!ai_socket_available)
-	{
-		return 1;
-	}
+	 
 	//Check if it is already initiated, and if it is, just return.
 	if (initialized && valid_subscription) {
 		return 1;
