@@ -34,7 +34,7 @@ STBZone::STBZone()
 	pid("0"),
 	page("0"),
 	magazine("0"),
-	service_id(""),	 
+	service_id(""),
 	initialized(false),
 	valid_subscription(false),
 	translation_received(false),
@@ -239,6 +239,7 @@ std::vector<std::string> STBZone::parseJsonArray(const std::string& json) {
 //Initialize the 
 int STBZone::initiate()
 {
+
 	//Check if it is already initiated, and if it is, just return.
 	if (initialized && valid_subscription) {
 		return 1;

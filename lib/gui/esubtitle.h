@@ -89,8 +89,7 @@ private:
 	eRect m_pixmap_dest;
 
 	ePtr<eTimer> m_translation_timer; // Timer for polling messages	 
-	void checkTranslation(); // Method to poll messages	
-	STBZone& stbzone;
+	void checkTranslation(); // Method to poll messages		 
 };
 
 #endif

@@ -49,7 +49,7 @@ using namespace std;
 #ifndef SUBT_TXT_ABNORMAL_PTS_DIFFS
 #define SUBT_TXT_ABNORMAL_PTS_DIFFS 1800000
 #endif
-
+STBZone& stbzone = STBZone::GetInstance();
 class eStaticServiceDVBInformation : public iStaticServiceInformation
 {
 	DECLARE_REF(eStaticServiceDVBInformation);
@@ -1360,7 +1360,6 @@ void eDVBServicePlay::serviceEventTimeshift(int event)
 RESULT eDVBServicePlay::start()
 {
 	eServiceReferenceDVB service = (eServiceReferenceDVB&)m_reference;
-	STBZone& stbzone = STBZone::GetInstance();
 	stbzone.service_id = std::to_string(service.getServiceID().get());
 	stbzone.translation_result = "";
 
@@ -3343,7 +3342,7 @@ RESULT eDVBServicePlay::enableSubtitles(iSubtitleUser* user, SubtitleTrack& trac
 {
 	if (m_subtitle_widget)
 		disableSubtitles();
-	STBZone& stbzone = STBZone::GetInstance();
+	 
 	if (m_dvb_service && eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled"))
 	{
 		stbzone.source_language = track.language_code;

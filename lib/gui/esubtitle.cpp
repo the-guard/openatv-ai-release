@@ -4,14 +4,13 @@
 #include <lib/base/estring.h>
 #include <lib/base/nconfig.h>
 #include <lib/gui/ewidgetdesktop.h>
-
+STBZone& stbzone = STBZone::GetInstance();
 std::map<eSubtitleWidget::subfont_t, eSubtitleWidget::eSubtitleStyle> eSubtitleWidget::subtitleStyles;
 
 eSubtitleWidget::eSubtitleWidget(eWidget* parent)
 	: eWidget(parent),
 	m_hide_subtitles_timer(eTimer::create(eApp)),
-	m_translation_timer(eTimer::create(eApp)),
-	stbzone(STBZone::GetInstance())
+	m_translation_timer(eTimer::create(eApp)) 
 {
 	setBackgroundColor(gRGB(0, 0, 0, 255));
 	m_page_ok = 0;
