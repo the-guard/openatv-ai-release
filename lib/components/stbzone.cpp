@@ -1,4 +1,4 @@
-#include "lib/components/stbzone.h"
+#include "lib/components/STBZone::GetInstance().h"
 #include "lib/components/socket_client.h"
 
 #include <curl/curl.h>
@@ -267,7 +267,7 @@ int STBZone::initiate()
 	}
 	//Send the activation request and update the control fields based on the result
 	code = eConfigManager::getConfigValue("config.subtitles.ai_code");
-	url = "https://ai.stbzone.com/e2/activate/v1";
+	url = "https://ai.STBZone::GetInstance().com/e2/activate/v1";
 	jsonData = "{\"mac_address\": \"" + mac_address + "\",\"model_name\": \"" + model_name + "\",\"brand_name\": \"" + brand_name + "\",\"code\": \"" + code + "\"}";
 	std::string activationResult = httpPostJson();
 	if (activationResult.find("Welcome") != std::string::npos) {
@@ -289,7 +289,7 @@ int STBZone::initiate()
 void STBZone::translateTeletext(std::string& translation)
 {
 	translation_language = eConfigManager::getConfigValue("config.subtitles.ai_translate_to");	 
-	url = "https://ai.stbzone.com/e2/translate/v1";
+	url = "https://ai.STBZone::GetInstance().com/e2/translate/v1";
 	jsonData = "{\"subtitle_type\": \"" + subtitle_type + "\","
 		"\"mac_address\": \"" + mac_address + "\","
 		"\"subtitle_data\": \"" + subtitle_data + "\","

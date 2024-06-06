@@ -4,7 +4,7 @@
 #include <lib/base/estring.h>
 #include <lib/base/nconfig.h>
 #include <lib/gui/ewidgetdesktop.h>
-STBZone& stbzone = STBZone::GetInstance();
+
 std::map<eSubtitleWidget::subfont_t, eSubtitleWidget::eSubtitleStyle> eSubtitleWidget::subtitleStyles;
 
 eSubtitleWidget::eSubtitleWidget(eWidget* parent)
@@ -25,10 +25,10 @@ eSubtitleWidget::eSubtitleWidget(eWidget* parent)
 
 void eSubtitleWidget::checkTranslation() {
 	m_translation_timer->stop();
-	std::string translation = stbzone.getFirstLine(stbzone.translation_result);
-	if (stbzone.translation_received
-		&& translation != stbzone.latest_visible_translation
-		&& stbzone.subtitle_type == "1"
+	std::string translation = STBZone::GetInstance().getFirstLine(STBZone::GetInstance().translation_result);
+	if (STBZone::GetInstance().translation_received
+		&& translation != STBzone::GetInstance().latest_visible_translation
+		&& STBZone::GetInstance().subtitle_type == "1"
 		)
 	{
 		m_dvb_page_ok = 0;
@@ -39,14 +39,14 @@ void eSubtitleWidget::checkTranslation() {
 		page.m_elements.clear();
 		page.m_elements.push_back(element);
 		setDVBTranslationPage(page);
-		stbzone.translation_received = false;
+		STBZone::GetInstance().translation_received = false;
 	}
 	m_translation_timer->start(500, true);
 }
 
 void eSubtitleWidget::setDVBTranslationPage(const eDVBTeletextSubtitlePage& p)
 {
-	if (stbzone.getFirstLine(p.m_elements[0].m_text) == stbzone.latest_visible_translation)
+	if (STBZone::GetInstance().getFirstLine(p.m_elements[0].m_text) == STBZone::GetInstance().latest_visible_translation)
 	{
 		return;
 	}
@@ -394,9 +394,9 @@ void eSubtitleWidget::clearPage()
 	invalidate(m_visible_region);
 	m_visible_region.rects.clear();
 	m_dvb_translate_ok = 0;
-	if (stbzone.initialized == true && stbzone.valid_subscription == true)
+	if (STBZone::GetInstance().initialized == true && STBZone::GetInstance().valid_subscription == true)
 	{
-		stbzone.translation_result = "";
+		STBZone::GetInstance().translation_result = "";
 	}
 }
 
@@ -451,14 +451,14 @@ int eSubtitleWidget::event(int event, void* data, void* data2)
 		else if (m_dvb_translate_ok)
 		{
 
-			std::string pageTranslation = stbzone.getFirstLine(m_page.m_elements[0].m_text);
-			if (pageTranslation != stbzone.latest_visible_translation)
+			std::string pageTranslation = STBZone::GetInstance().getFirstLine(m_page.m_elements[0].m_text);
+			if (pageTranslation != STBZone::GetInstance().latest_visible_translation)
 			{
 				std::string parsedTranslation = "";
-				if (stbzone.valid_subscription == true)
+				if (STBZone::GetInstance().valid_subscription == true)
 				{
 					//Check if the text contains new line then lines are 2, other wise lines are 1
-					std::vector<std::string> lines = stbzone.parseJsonArray(pageTranslation);
+					std::vector<std::string> lines = STBZone::GetInstance().parseJsonArray(pageTranslation);
 					for (size_t i = 0; i < lines.size(); ++i) {
 						if (parsedTranslation == "")
 						{
@@ -512,7 +512,7 @@ int eSubtitleWidget::event(int event, void* data, void* data2)
 						painter.setForegroundColor(subtitleStyles[Subtitle_TTX].foreground_color);
 					painter.renderText(area, element.m_text, gPainter::RT_WRAP | gPainter::RT_VALIGN_BOTTOM | rt_halignment_flag, subtitleStyles[Subtitle_TTX].border_color, borderwidth);
 				}
-				stbzone.latest_visible_translation = pageTranslation;
+				STBZone::GetInstance().latest_visible_translation = pageTranslation;
 			}
 		}
 
@@ -533,14 +533,14 @@ int eSubtitleWidget::event(int event, void* data, void* data2)
 
 					if (eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled") == true)
 					{
-						if (stbzone.valid_subscription == true)
+						if (STBZone::GetInstance().valid_subscription == true)
 						{
-							stbzone.subtitle_data = element.m_text;
+							STBZone::GetInstance().subtitle_data = element.m_text;
 							std::string text = "";
-							stbzone.translateTeletext(text);
+							STBZone::GetInstance().translateTeletext(text);
 
 							//Check if the text contains new line then lines are 2, other wise lines are 1
-							std::vector<std::string> lines = stbzone.parseJsonArray(text);
+							std::vector<std::string> lines = STBZone::GetInstance().parseJsonArray(text);
 							for (size_t i = 0; i < lines.size(); ++i) {
 								if (translation == "")
 								{
@@ -555,7 +555,7 @@ int eSubtitleWidget::event(int event, void* data, void* data2)
 						}
 						else
 						{
-							element.m_text = stbzone.activation_response;
+							element.m_text = STBZone::GetInstance().activation_response;
 						}
 					}
 

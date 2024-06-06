@@ -6,9 +6,9 @@
 #include <fcntl.h>      // Include fcntl.h for fcntl() and related constants
 #include <iostream>
 #include <cstring>
-#include "lib/components/stbzone.h"
+#include "lib/components/STBZone::GetInstance().h"
 
-STBZone& stbzone = STBZone::GetInstance();
+
 // Static method to get the singleton instance
 UnixSocketClient& UnixSocketClient::getInstance(const std::string& socketPath) {
     static UnixSocketClient instance(socketPath);
@@ -73,11 +73,11 @@ void UnixSocketClient::TimerCheck() {
         if (!isConnected) connectToServer();
         sendAll("RESULT\n");
         std::string response = receiveAll();
-        if (response != latest_translation && stbzone.subtitle_type =="1")
+        if (response != latest_translation && STBZone::GetInstance().subtitle_type =="1")
         {
             latest_translation = response;
-            stbzone.translation_result = response;
-            stbzone.translation_received = true;
+            STBZone::GetInstance().translation_result = response;
+            STBZone::GetInstance().translation_received = true;
         }
     }
     m_polling_timer->start(700, true); // Restart the timer

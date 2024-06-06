@@ -5,7 +5,7 @@
 #include <lib/gui/ewidget.h>
 #include <lib/dvb/teletext.h>
 #include <lib/dvb/subtitle.h>
-#include "lib/components/stbzone.h"
+#include "lib/components/STBZone::GetInstance().h"
 
 struct ePangoSubtitlePageElement
 {
