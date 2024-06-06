@@ -19,7 +19,6 @@ STBZone& STBZone::GetInstance() {
 	static STBZone instance;  // Static instance of STBZone
 	return instance;
 }
- 
 STBZone::STBZone()
 	: brand_name(""),
 	model_name(""),
@@ -30,7 +29,7 @@ STBZone::STBZone()
 	translation_result(""),
 	latest_visible_translation(""),
 	subtitle_type("0"),
-	subtitle_data(""),	
+	subtitle_data(""),
 	pid("0"),
 	page("0"),
 	magazine("0"),
@@ -239,7 +238,6 @@ std::vector<std::string> STBZone::parseJsonArray(const std::string& json) {
 //Initialize the 
 int STBZone::initiate()
 {
-
 	//Check if it is already initiated, and if it is, just return.
 	if (initialized && valid_subscription) {
 		return 1;
@@ -267,7 +265,7 @@ int STBZone::initiate()
 	}
 	//Send the activation request and update the control fields based on the result
 	code = eConfigManager::getConfigValue("config.subtitles.ai_code");
-	url = "https://ai.STBZone::GetInstance().com/e2/activate/v1";
+	url = "https://ai.stbzone.com/e2/activate/v1";
 	jsonData = "{\"mac_address\": \"" + mac_address + "\",\"model_name\": \"" + model_name + "\",\"brand_name\": \"" + brand_name + "\",\"code\": \"" + code + "\"}";
 	std::string activationResult = httpPostJson();
 	if (activationResult.find("Welcome") != std::string::npos) {
@@ -288,13 +286,13 @@ int STBZone::initiate()
 
 void STBZone::translateTeletext(std::string& translation)
 {
-	translation_language = eConfigManager::getConfigValue("config.subtitles.ai_translate_to");	 
-	url = "https://ai.STBZone::GetInstance().com/e2/translate/v1";
+	translation_language = eConfigManager::getConfigValue("config.subtitles.ai_translate_to");
+	url = "https://ai.stbzone.com/e2/translate/v1";
 	jsonData = "{\"subtitle_type\": \"" + subtitle_type + "\","
 		"\"mac_address\": \"" + mac_address + "\","
 		"\"subtitle_data\": \"" + subtitle_data + "\","
 		"\"source_language\": \"" + source_language + "\","
-		"\"translation_language\": \"" + translation_language + "\"}";	
+		"\"translation_language\": \"" + translation_language + "\"}";
 	translation = httpPostJson();
 }
 
