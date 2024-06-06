@@ -3,7 +3,6 @@
 #include <memory.h>
 #include "lib/components/stbzone.h"
 #include <lib/base/nconfig.h>
-
 ePESParser::ePESParser()
 {
 	m_pes_position = 0;
@@ -20,9 +19,9 @@ void ePESParser::setStreamID(unsigned char id, unsigned char id_mask)
 	m_stream_id_mask = id_mask;
 }
 
-void ePESParser::processData(const uint8_t *p, int len)
+void ePESParser::processData(const uint8_t* p, int len)
 {
-		/* this is a state machine, handling arbitary amounts of pes-formatted data. */
+	/* this is a state machine, handling arbitary amounts of pes-formatted data. */
 	while (len)
 	{
 		if (m_pes_position >= 6) // length ok?
@@ -55,7 +54,8 @@ void ePESParser::processData(const uint8_t *p, int len)
 				}
 				m_pes_position = 0;
 			}
-		} else
+		}
+		else
 		{
 			if (m_pes_position < 4)
 			{
@@ -64,7 +64,7 @@ void ePESParser::processData(const uint8_t *p, int len)
 					ch &= m_stream_id_mask;
 				if (ch != m_header[m_pes_position])
 				{
-//					eDebug("[ePESParser] sync lost at %d (%02x)", m_pes_position, *p);
+					//					eDebug("[ePESParser] sync lost at %d (%02x)", m_pes_position, *p);
 					m_pes_position = 0;
 					while (m_header[m_pes_position] == ch) /* guaranteed to stop at the old m_pes_position */
 						m_pes_position++;
