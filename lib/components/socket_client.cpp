@@ -1,4 +1,4 @@
-#include "lib/components/socket_client.h"
+#include "socket_client.h"
 #include <lib/base/ebase.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -6,9 +6,7 @@
 #include <fcntl.h>      // Include fcntl.h for fcntl() and related constants
 #include <iostream>
 #include <cstring>
-#include "lib/components/stbzone.h"
-
-
+#include "stbzone.h"
 // Static method to get the singleton instance
 UnixSocketClient& UnixSocketClient::getInstance(const std::string& socketPath) {
     static UnixSocketClient instance(socketPath);
@@ -73,7 +71,7 @@ void UnixSocketClient::TimerCheck() {
         if (!isConnected) connectToServer();
         sendAll("RESULT\n");
         std::string response = receiveAll();
-        if (response != latest_translation && STBZone::GetInstance().subtitle_type =="1")
+        if (response != latest_translation && STBZone::GetInstance().subtitle_type == "1")
         {
             latest_translation = response;
             STBZone::GetInstance().translation_result = response;
