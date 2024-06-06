@@ -1,7 +1,7 @@
 #include <lib/base/eerror.h>
 #include <lib/dvb/pesparse.h>
 #include <memory.h>
-#include <lib/components/stbzone.h>
+#include "lib/components/stbzone.h"
 #include <lib/base/nconfig.h>
 ePESParser::ePESParser()
 {

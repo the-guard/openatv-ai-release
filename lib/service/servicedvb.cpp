@@ -35,7 +35,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <lib/components/stbzone.h>
+#include "lib/components/stbzone.h"
 using namespace std;
 
 #ifndef BYTE_ORDER

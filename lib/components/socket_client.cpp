@@ -1,4 +1,4 @@
-#include "socket_client.h"
+#include "lib/components/socket_client.h"
 #include <lib/base/ebase.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -6,7 +6,7 @@
 #include <fcntl.h>      // Include fcntl.h for fcntl() and related constants
 #include <iostream>
 #include <cstring>
-#include "stbzone.h"
+#include "lib/components/stbzone.h"
 // Static method to get the singleton instance
 UnixSocketClient& UnixSocketClient::getInstance(const std::string& socketPath) {
     static UnixSocketClient instance(socketPath);
