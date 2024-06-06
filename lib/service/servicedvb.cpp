@@ -35,6 +35,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <lib/components/stbzone.h>
 using namespace std;
 
 #ifndef BYTE_ORDER
@@ -1358,6 +1359,12 @@ void eDVBServicePlay::serviceEventTimeshift(int event)
 RESULT eDVBServicePlay::start()
 {
 	eServiceReferenceDVB service = (eServiceReferenceDVB&)m_reference;
+	STBZone& stbzone = STBZone::GetInstance();
+	if (stbzone.ai_socket_available)
+	{
+		stbzone.service_id = std::to_string(service.getServiceID().get());
+		stbzone.translation_result = "";
+	}
 	bool scrambled = true;
 	int packetsize = 188;
 	RESULT ret = 0;
@@ -3328,7 +3335,22 @@ RESULT eDVBServicePlay::enableSubtitles(iSubtitleUser *user, SubtitleTrack &trac
 {
 	if (m_subtitle_widget)
 		disableSubtitles();
-
+	STBZone& stbzone = STBZone::GetInstance();
+	if (stbzone.ai_socket_available)
+	{
+		if (m_dvb_service && eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled"))
+		{
+			stbzone.source_language = track.language_code;
+			stbzone.pid = std::to_string(track.pid);
+			stbzone.page = std::to_string(track.page_number);
+			stbzone.magazine = std::to_string(track.magazine_number);
+			if (!stbzone.initialized)
+			{
+				stbzone.initiate();
+			}
+		}
+	}
+	
 	if (track.type == 1)  // teletext subtitles
 	{
 		int page, magazine, pid;
@@ -3338,8 +3360,8 @@ RESULT eDVBServicePlay::enableSubtitles(iSubtitleUser *user, SubtitleTrack &trac
 		{
 			eDebug("[eDVBServicePlay] enable teletext subtitles.. no parser !!!");
 			return -1;
-		}
-
+		}		
+		stbzone.subtitle_type = "0";
 		pid = track.pid;
 		page = track.page_number;
 		magazine = track.magazine_number;
@@ -3369,7 +3391,7 @@ RESULT eDVBServicePlay::enableSubtitles(iSubtitleUser *user, SubtitleTrack &trac
 			eDebug("[eDVBServicePlay] enable dvb subtitles.. no parser !!!");
 			return -1;
 		}
-
+		stbzone.subtitle_type = "1";
 		pid = track.pid;
 		composition_page_id = track.page_number;
 		ancillary_page_id = track.magazine_number;
