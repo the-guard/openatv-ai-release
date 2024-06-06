@@ -22,8 +22,7 @@ public:
 	std::string page;
 	std::string magazine;
 	std::string service_id;	
-	std::string activation_response;
-	bool ai_socket_available;
+	std::string activation_response;	 
 	bool initialized;
 	bool valid_subscription;
 	bool translation_received;

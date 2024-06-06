@@ -18,11 +18,8 @@ eSubtitleWidget::eSubtitleWidget(eWidget* parent)
 	m_dvb_page_ok = 0;
 	m_pango_page_ok = 0;
 	CONNECT(m_hide_subtitles_timer->timeout, eSubtitleWidget::clearPage);
-	if (stbzone.ai_socket_available)
-	{
-		CONNECT(m_translation_timer->timeout, eSubtitleWidget::checkTranslation);
-		m_translation_timer->start(500, true);
-	}
+	CONNECT(m_translation_timer->timeout, eSubtitleWidget::checkTranslation);
+	m_translation_timer->start(500, true);
 }
 
 #define startX 50
@@ -253,14 +250,13 @@ void eSubtitleWidget::setPage(const eDVBTeletextSubtitlePage& p)
 void eSubtitleWidget::setPage(const eDVBSubtitlePage& p)
 {
 	bool processDefault = true;
-	
-	if (stbzone.ai_socket_available)
+
+
+	if (eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled"))
 	{
-		if (eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled"))
-		{
-			processDefault = false;
-		}
+		processDefault = false;
 	}
+
 	if (processDefault)
 	{
 		eDebug("[eSubtitleWidget] setPage");
@@ -391,7 +387,7 @@ void eSubtitleWidget::setPage(const eVobSubtitlePage& p)
 }
 
 void eSubtitleWidget::clearPage()
-{	
+{
 	m_page_ok = 0;
 	m_dvb_page_ok = 0;
 	m_pango_page_ok = 0;
@@ -446,7 +442,7 @@ int eSubtitleWidget::event(int event, void* data, void* data2)
 		int borderwidth = eConfigManager::getConfigIntValue("config.subtitles.subtitle_borderwidth", 2) * getDesktop(0)->size().width() / 1280;
 		int fontsize = eConfigManager::getConfigIntValue("config.subtitles.subtitle_fontsize", 34) * getDesktop(0)->size().width() / 1280;
 		int bcktrans = eConfigManager::getConfigIntValue("config.subtitles.subtitles_backtrans", 255);
-	
+
 		if (m_pixmap)
 		{
 			eRect r = m_pixmap_dest;
@@ -535,36 +531,35 @@ int eSubtitleWidget::event(int event, void* data, void* data2)
 				eDVBTeletextSubtitlePageElement& element = m_page.m_elements[i];
 				if (!element.m_text.empty())
 				{
-					if (stbzone.ai_socket_available)
-					{
-						if (eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled") == true)
-						{
-							if (stbzone.valid_subscription == true)
-							{
-								stbzone.subtitle_data = element.m_text;
-								std::string text = "";
-								stbzone.translateTeletext(text);
 
-								//Check if the text contains new line then lines are 2, other wise lines are 1
-								std::vector<std::string> lines = stbzone.parseJsonArray(text);
-								for (size_t i = 0; i < lines.size(); ++i) {
-									if (translation == "")
-									{
-										translation = lines[i];
-									}
-									else
-									{
-										translation += "\n" + lines[i];
-									}
+					if (eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled") == true)
+					{
+						if (stbzone.valid_subscription == true)
+						{
+							stbzone.subtitle_data = element.m_text;
+							std::string text = "";
+							stbzone.translateTeletext(text);
+
+							//Check if the text contains new line then lines are 2, other wise lines are 1
+							std::vector<std::string> lines = stbzone.parseJsonArray(text);
+							for (size_t i = 0; i < lines.size(); ++i) {
+								if (translation == "")
+								{
+									translation = lines[i];
 								}
-								element.m_text = translation;
+								else
+								{
+									translation += "\n" + lines[i];
+								}
 							}
-							else
-							{
-								element.m_text = stbzone.activation_response;
-							}
+							element.m_text = translation;
+						}
+						else
+						{
+							element.m_text = stbzone.activation_response;
 						}
 					}
+
 					eRect& area = element.m_area;
 					if (bcktrans != 255)
 					{
