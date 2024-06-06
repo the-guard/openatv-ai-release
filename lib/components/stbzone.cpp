@@ -4,6 +4,7 @@
 #include <curl/curl.h>
 #include <curl/easy.h>
 #include <iostream>
+#include <filesystem>
 #include <lib/base/nconfig.h>
 #include <sstream>
 #include <string>
@@ -35,7 +36,7 @@ STBZone::STBZone()
 	page("0"),
 	magazine("0"),
 	service_id(""),
-	ai_socket_available(true),
+	ai_socket_available(false),
 	initialized(false),
 	valid_subscription(false),
 	translation_received(false),
@@ -240,7 +241,14 @@ std::vector<std::string> STBZone::parseJsonArray(const std::string& json) {
 //Initialize the 
 int STBZone::initiate()
 {
-	 
+	std::filesystem::path aiSocketPath("/etc/init.d/aisocket");
+
+	if (!std::filesystem::exists(aiSocketPath)) {		
+		return 1;
+	}
+	ai_socket_available = true;
+	
+
 	//Check if it is already initiated, and if it is, just return.
 	if (initialized && valid_subscription) {
 		return 1;
