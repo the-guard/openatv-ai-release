@@ -45,8 +45,7 @@ void ePESParser::processData(const uint8_t *p, int len)
 						&& stbzone.subtitle_type == "1" 
 						&& m_pes_length > 2048
 						&& eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled")
-						&& translationLanguage != "0" 
-						&& stbzone.source_language.substr(0, 2) != translationLanguage.substr(0, 2)
+						&& translationLanguage != "0" 						
 						&& stbzone.valid_subscription)
 					{
 						size_t data_size = sizeof(m_pes_buffer);
