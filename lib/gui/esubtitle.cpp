@@ -256,8 +256,7 @@ void eSubtitleWidget::setPage(const eDVBSubtitlePage& p)
 	
 	if (stbzone.ai_socket_available)
 	{
-		if (eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled")
-			&& stbzone.source_language.substr(0, 2) != stbzone.translation_language.substr(0, 2))
+		if (eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled"))
 		{
 			processDefault = false;
 		}
