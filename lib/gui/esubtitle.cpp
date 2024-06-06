@@ -33,7 +33,7 @@ void eSubtitleWidget::checkTranslation() {
 	if (stbzone.translation_received
 		&& translation != stbzone.latest_visible_translation
 		&& stbzone.subtitle_type == "1"
-		&& stbzone.source_language.substr(0, 2) != stbzone.translation_language.substr(0, 2))
+		)
 	{
 		m_dvb_page_ok = 0;
 		eDVBTeletextSubtitlePage page;

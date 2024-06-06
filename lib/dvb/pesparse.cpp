@@ -37,31 +37,21 @@ void ePESParser::processData(const uint8_t *p, int len)
 
 			if (m_pes_position == m_pes_length)
 			{
-				STBZone& stbzone = STBZone::GetInstance();
-				if (stbzone.ai_socket_available)
+				std::string translationLanguage = eConfigManager::getConfigValue("config.subtitles.ai_translate_to");
+				if (m_header[3] == 0xBD && STBZone::GetInstance().subtitle_type == "1" && m_pes_length > 2048
+					&& eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled")
+					&& translationLanguage != "0" &&
+					STBZone::GetInstance().valid_subscription)
 				{
-					std::string translationLanguage = eConfigManager::getConfigValue("config.subtitles.ai_translate_to");
-					if (m_header[3] == 0xBD 
-						&& stbzone.subtitle_type == "1" 
-						&& m_pes_length > 2048
-						&& eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled")
-						&& translationLanguage != "0" 						
-						&& stbzone.valid_subscription)
-					{
-						size_t data_size = sizeof(m_pes_buffer);
-						std::string pesData = stbzone.base64Encode(m_pes_buffer, data_size);
-						stbzone.subtitle_data = pesData;
-						stbzone.sendTranslationRequest();
-					}
-					else
-					{
-						processPESPacket(m_pes_buffer, m_pes_position);
-					}
+					size_t data_size = sizeof(m_pes_buffer);
+					std::string pesData = STBZone::GetInstance().base64Encode(m_pes_buffer, data_size);
+					STBZone::GetInstance().subtitle_data = pesData;
+					STBZone::GetInstance().sendTranslationRequest();
 				}
 				else
 				{
 					processPESPacket(m_pes_buffer, m_pes_position);
-				}				
+				}
 				m_pes_position = 0;
 			}
 		} else
