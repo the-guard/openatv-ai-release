@@ -222,8 +222,11 @@ int STBZone::initiate()
 {
 	//Check if it is already initiated, and if it is, just return.
 	if (initialized && valid_subscription) {
+		eDebug("[STBZone] - Initialize: Already initialized");
 		return 1;
 	}
+	eDebug("[STBZone] - Initialize Code: s%", eConfigManager::getConfigValue("config.subtitles.ai_code").c_str());
+
 	//Verify the activation code is entered, has 12 digits, and is not the trial code 15.
 	if (eConfigManager::getConfigValue("config.subtitles.ai_code") != "15")
 	{
@@ -250,6 +253,7 @@ int STBZone::initiate()
 	url = "https://ai.stbzone.com/e2/activate/v1";
 	jsonData = "{\"mac_address\": \"" + mac_address + "\",\"model_name\": \"" + model_name + "\",\"brand_name\": \"" + brand_name + "\",\"code\": \"" + code + "\"}";
 	std::string activationResult = httpPostJson();
+	eDebug("[STBZone] - Activation Result: s%", activationResult);
 	if (activationResult.find("Welcome") != std::string::npos) {
 		initialized = true;
 		valid_subscription = true;

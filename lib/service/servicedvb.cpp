@@ -3330,13 +3330,18 @@ RESULT eDVBServicePlay::enableSubtitles(iSubtitleUser *user, SubtitleTrack &trac
 {
 	if (m_subtitle_widget)
 		disableSubtitles();
-	STBZone& stbInstance = STBZone::GetInstance();
+	STBZone& stbInstance = STBZone::GetInstance();	
 	if (m_dvb_service && eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled"))
 	{
+		eDebug("[ServiceDVB] - AI Enabled");
 		stbInstance.source_language = track.language_code;
 		stbInstance.pid = std::to_string(track.pid);
 		stbInstance.page = std::to_string(track.page_number);
 		stbInstance.magazine = std::to_string(track.magazine_number);
+		eDebug("[ServiceDVB] - Source Lang: %s", track.language_code.c_str());
+		eDebug("[ServiceDVB] - pid: %s", std::to_string(track.pid).c_str());
+		eDebug("[ServiceDVB] - page: %s", std::to_string(track.page_number).c_str());
+		eDebug("[ServiceDVB] - magazine: %s", std::to_string(track.magazine_number));
 		if (!stbInstance.initialized)
 		{
 			stbInstance.initiate();
