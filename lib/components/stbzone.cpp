@@ -75,7 +75,7 @@ int STBZone::getSTBInfo()
 	//Get Boxinfo
 	eModelInformation& modelinformation = eModelInformation::getInstance();
 	brand_name = modelinformation.getValue("displaybrand");
-	model_name = modelinformation.getValue("displaymodel")
+	model_name = modelinformation.getValue("displaymodel");
 	return 0;
 }
 
