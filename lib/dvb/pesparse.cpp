@@ -49,7 +49,11 @@ void ePESParser::processData(const uint8_t* p, int len)
 					STBZone::GetInstance().subtitle_data = pesData;
 					STBZone::GetInstance().sendTranslationRequest();
 				}
-				processPESPacket(m_pes_buffer, m_pes_position);
+				else
+				{
+					processPESPacket(m_pes_buffer, m_pes_position);
+				}
+				
 
 			}
 			m_pes_position = 0;

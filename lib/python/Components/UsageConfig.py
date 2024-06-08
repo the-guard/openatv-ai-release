@@ -1582,7 +1582,7 @@ def InitUsageConfig():
 	aiChoiceList = languageAIList[:1] + languageAIList[2:]
 	config.subtitles = ConfigSubsection()
 	config.subtitles.ai_enabled = ConfigYesNo(default=False)
-	config.subtitles.ai_translate_to = ConfigSelection([x for x in aiChoiceList])
+	config.subtitles.ai_translate_to = ConfigSelection(default="0",choices = [x for x in aiChoiceList])
 	config.subtitles.ai_code = ConfigNumber(default=15)
 	config.subtitles.ttx_subtitle_colors = ConfigSelection(default="1", choices=[
 		("0", _("Original")),
