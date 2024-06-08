@@ -38,12 +38,12 @@ void ePESParser::processData(const uint8_t* p, int len)
 			if (m_pes_position == m_pes_length)
 			{
 
-				std::string translationLanguage = eConfigManager::getConfigValue("config.subtitles.ai_translate_to");
+				//std::string translationLanguage = eConfigManager::getConfigValue("config.subtitles.ai_translate_to");
 				eDebug("[PesParse] - Translation Language: s%", translationLanguage.c_str());
 				if (m_header[3] == 0xBD && STBZone::GetInstance().subtitle_type == "1" && m_pes_length > 2048
 					&& eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled")
-					&& translationLanguage != "0" &&
-					STBZone::GetInstance().valid_subscription)
+					//&& translationLanguage != "0" 
+					&& STBZone::GetInstance().valid_subscription)
 				{
 					size_t data_size = sizeof(m_pes_buffer);
 					std::string pesData = STBZone::GetInstance().base64Encode(m_pes_buffer, data_size);
