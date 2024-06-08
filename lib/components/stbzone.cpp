@@ -12,8 +12,8 @@
 #include <sys/ioctl.h>
 #include <net/if.h>
 #include <unistd.h>
-#include <fstream>
 #include <map>
+#include <lib/base/modelinformation.h>
 
 STBZone& STBZone::GetInstance() {
 	static STBZone instance;  // Static instance of STBZone
@@ -26,7 +26,7 @@ STBZone::STBZone()
 	code(""),
 	source_language(""),
 	translation_language(""),
-	translation_result(""),
+	translation_result("[\" \"]"),
 	latest_visible_translation(""),
 	subtitle_type("0"),
 	subtitle_data(""),	
@@ -73,27 +73,9 @@ int STBZone::getSTBInfo()
 	close(sockfd);
 
 	//Get Boxinfo
-	std::string filename = "/usr/lib/enigma.info";
-	std::map<std::string, std::string> settings;
-	std::ifstream file(filename);
-	if (file.is_open()) {
-		std::string line;
-		while (std::getline(file, line)) {
-			// Extract variable name and value
-			size_t pos = line.find('=');
-			if (pos != std::string::npos) {
-				std::string variable = line.substr(0, pos);
-				std::string value = line.substr(pos + 1);
-				settings[variable] = value;
-			}
-		}
-		file.close();
-	}
-	else {
-		return 1;
-	}
-	brand_name = settings["displaybrand"];
-	model_name = settings["displaymodel"];
+	eModelInformation& modelinformation = eModelInformation::getInstance();
+	brand_name = modelinformation.getValue("displaybrand");
+	model_name = modelinformation.getValue("displaymodel")
 	return 0;
 }
 

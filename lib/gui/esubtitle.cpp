@@ -396,7 +396,7 @@ void eSubtitleWidget::clearPage()
 	m_visible_region.rects.clear();
 	if (stbzone.initialized == true && stbzone.valid_subscription == true)
 	{
-		stbzone.translation_result = "";
+		stbzone.translation_result = "[\" \"]";
 	}
 }
 

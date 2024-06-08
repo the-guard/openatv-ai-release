@@ -1359,7 +1359,7 @@ RESULT eDVBServicePlay::start()
 {
 	eServiceReferenceDVB service = (eServiceReferenceDVB&)m_reference;
 	STBZone::GetInstance().service_id = std::to_string(service.getServiceID().get());
-	STBZone::GetInstance().translation_result = "";
+	STBZone::GetInstance().translation_result = "[\" \"]";
 	bool scrambled = true;
 	int packetsize = 188;
 	RESULT ret = 0;
