@@ -50,3 +50,4 @@ doxy/
 *.db
 *.wsuo
 /.gitignore
+*.json
