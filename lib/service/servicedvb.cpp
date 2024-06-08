@@ -3331,7 +3331,7 @@ RESULT eDVBServicePlay::enableSubtitles(iSubtitleUser *user, SubtitleTrack &trac
 	if (m_subtitle_widget)
 		disableSubtitles();
 	STBZone& stbInstance = STBZone::GetInstance();
-	if (m_dvb_service && eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled"))
+	if (m_dvb_service)
 	{
 		stbInstance.source_language = track.language_code;
 		stbInstance.pid = std::to_string(track.pid);
