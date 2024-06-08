@@ -40,3 +40,13 @@ compile
 .dirstamp
 mipsel-oe-linux-libtool
 doxy/
+*.vsidx
+*.ipch
+*.sqlite
+*.bin
+*.opendb
+*.db-wal
+*.db-shm
+*.db
+*.wsuo
+/.gitignore
