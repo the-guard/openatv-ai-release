@@ -5,7 +5,7 @@
 #include <lib/gui/ewidget.h>
 #include <lib/dvb/teletext.h>
 #include <lib/dvb/subtitle.h>
-
+#include <lib/components/stbzone.h>
 struct ePangoSubtitlePageElement
 {
 	gRGB m_color;
@@ -46,6 +46,7 @@ public:
 	eSubtitleWidget(eWidget *parent);
 
 	void setPage(const eDVBTeletextSubtitlePage &p);
+	void setDVBTranslationPage(const eDVBTeletextSubtitlePage& p);
 	void setPage(const eDVBSubtitlePage &p);
 	void setPage(const ePangoSubtitlePage &p);
 	void setPage(const eVobSubtitlePage &p);
@@ -71,7 +72,7 @@ protected:
 private:
 	int m_page_ok;
 	eDVBTeletextSubtitlePage m_page;
-
+	int m_dvb_translate_ok;
 	int m_dvb_page_ok;
 	eDVBSubtitlePage m_dvb_page;
 
@@ -86,6 +87,10 @@ private:
 
 	ePtr<gPixmap> m_pixmap;  // pixmap to paint on next evtPaint
 	eRect m_pixmap_dest;
+
+	ePtr<eTimer> m_translation_timer; // Timer for polling messages	 
+	void checkTranslation(); // Method to poll messages	
+	STBZone& stbzone;
 };
 
 #endif
