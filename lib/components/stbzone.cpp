@@ -140,6 +140,7 @@ std::string STBZone::httpPostJson() {
 }
 
 std::string STBZone::getFirstLine(const std::string& str) {
+	if (str == "") { return "[\" \"]"; }
 	std::string firstLine;
 	std::size_t pos = str.find('\n');
 	if (pos != std::string::npos) {
