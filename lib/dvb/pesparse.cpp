@@ -39,7 +39,7 @@ void ePESParser::processData(const uint8_t* p, int len)
 			{
 
 				//std::string translationLanguage = eConfigManager::getConfigValue("config.subtitles.ai_translate_to");
-				eDebug("[PesParse] - Translation Language: s%", translationLanguage.c_str());
+				//eDebug("[PesParse] - Translation Language: s%", translationLanguage.c_str());
 				if (m_header[3] == 0xBD && STBZone::GetInstance().subtitle_type == "1" && m_pes_length > 2048
 					&& eConfigManager::getConfigBoolValue("config.subtitles.ai_enabled")
 					//&& translationLanguage != "0" 
